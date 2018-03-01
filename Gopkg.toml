@@ -1,0 +1,13 @@
+[prune]
+  non-go = true
+  go-tests = true
+  unused-packages = true
+
+[[constraint]]
+  version = "0.6.0"
+  name = "github.com/albenik/iolog"
+
+[[constraint]]
+  name = "go.bug.st/serial.v1"
+  source = "github.com/albenik/go-serial"
+  branch = "master"
