@@ -10,16 +10,17 @@ type PortWrapper struct {
 	iolog *iolog.IOLog
 }
 
-func New(port serial.Port) *PortWrapper {
-	return &PortWrapper{port: port, iolog: iolog.New()}
-}
-
-func (pw *PortWrapper) StartLog() {
-	pw.iolog.Star()
-}
-
-func (pw *PortWrapper) StopLog() []*iolog.Record {
-	return pw.iolog.Stop()
+func Open(name string, mode *serial.Mode, log *iolog.IOLog) (wr *PortWrapper, outerr error) {
+	log.LogAny("open", func() (interface{}, error) {
+		if port, err := serial.Open(name, mode); err == nil {
+			wr = &PortWrapper{port: port, iolog: log}
+			return mode, nil
+		} else {
+			outerr = err
+			return mode, err
+		}
+	})
+	return
 }
 
 func (pw *PortWrapper) GetName() string {
